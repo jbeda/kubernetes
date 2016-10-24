@@ -42,10 +42,10 @@ func TestRunChecks(t *testing.T) {
 		expected bool
 		output   string
 	}{
-		{[]PreFlightCheck{}, true, "\n"},
-		{[]PreFlightCheck{preflightCheckTest{"warning"}}, true, "WARNING: warning"}, // should just print warning
-		{[]PreFlightCheck{preflightCheckTest{"error"}}, false, "\n"},
-		{[]PreFlightCheck{preflightCheckTest{"test"}}, false, "\n"},
+		{[]PreFlightCheck{}, true, ""},
+		{[]PreFlightCheck{preflightCheckTest{"warning"}}, true, "WARNING: warning\n"}, // should just print warning
+		{[]PreFlightCheck{preflightCheckTest{"error"}}, false, ""},
+		{[]PreFlightCheck{preflightCheckTest{"test"}}, false, ""},
 	}
 	for _, rt := range tokenTest {
 		buf := new(bytes.Buffer)
@@ -57,9 +57,9 @@ func TestRunChecks(t *testing.T) {
 				(actual == nil),
 			)
 		}
-		if buf.String() == rt.output {
+		if buf.String() != rt.output {
 			t.Errorf(
-				"failed runChecks:\n\texpected: %s\n\t  actual: %s",
+				"failed runChecks:\n\texpected: %#v\n\t  actual: %#v",
 				rt.output,
 				buf.String(),
 			)
